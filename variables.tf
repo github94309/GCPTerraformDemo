@@ -30,7 +30,7 @@ variable "image" {
 
 variable "bucket_name" {
   type        = string
-  default     = "gcp-storage-bucket"
+  default     = "gcp-damu727-bucket"
   description = "Base name for the GCS bucket"
 }
 
