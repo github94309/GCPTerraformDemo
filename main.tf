@@ -9,10 +9,13 @@ resource "random_id" "bucket_suffix" {
   byte_length = 4
 }
 
-# Create a Compute Engine VM
+Create 4 Compute Engine VMs
 resource "google_compute_instance" "vm_instance" {
- count  = 4 
-  name         = var.vm_name
+  count          = 4 
+  
+  # Interpolates the name: "damu727vm" + (0+1) -> damu727vm1
+  # The +1 is to shift the index from 0-3 to 1-4 for user-friendly naming.
+  name           = "${var.vm_name}${count.index + 1}"
   machine_type = var.machine_type
   zone         = var.zone
 
