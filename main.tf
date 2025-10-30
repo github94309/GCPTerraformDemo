@@ -9,7 +9,7 @@ resource "random_id" "bucket_suffix" {
   byte_length = 4
 }
 
-Create 4 Compute Engine VMs
+# Create 4 Compute Engine VMs
 resource "google_compute_instance" "vm_instance" {
   count          = 4 
   
