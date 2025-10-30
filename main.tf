@@ -1,27 +1,19 @@
 provider "google" {
-  project = var.project_id
-  region  = var.region
-  zone    = var.zone
+  project = "gcpterraformdemo-476710"
+  region  = "asia-south1"
+  zone    = "asia-south1-a"
 }
 
-# Generate a random ID for unique bucket names
-resource "random_id" "bucket_suffix" {
-  byte_length = 4
-}
 
-# Create 4 Compute Engine VMs
 resource "google_compute_instance" "vm_instance" {
-  count          = 4 
-  
-  # Interpolates the name: "damu727vm" + (0+1) -> damu727vm1
-  # The +1 is to shift the index from 0-3 to 1-4 for user-friendly naming.
-  name           = "${var.vm_name}${count.index + 1}"
-  machine_type = var.machine_type
-  zone         = var.zone
+  count         = 3
+  name          = "sriramvm${count.index + 1}"  # sriramvm1, sriramvm2, sriramvm3
+  machine_type  = "e2-medium"
+  zone          = "asia-south1-a"
 
   boot_disk {
     initialize_params {
-      image = var.image
+      image = "debian-cloud/debian-12"
     }
   }
 
@@ -30,21 +22,10 @@ resource "google_compute_instance" "vm_instance" {
     access_config {}
   }
 
-  metadata = {}
-
   tags = ["web", "dev"]
+
+  metadata = {
+    owner = "sriram"
+  }
 }
 
-#Create two Google Cloud Storage buckets
-resource "google_storage_bucket" "app_bucket" {
-  count         = 2 
-  # Ensure the name is unique by including the count.index
-  # e.g., bucket-app-0-abcd and bucket-app-1-abcd
-  name          = "${var.bucket_name}-${count.index}-${random_id.bucket_suffix.hex}"
-  location      = var.region
-  storage_class = "STANDARD"
-  versioning {
-    enabled = true
-  }
-  uniform_bucket_level_access = true
-}
