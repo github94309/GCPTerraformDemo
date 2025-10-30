@@ -48,17 +48,3 @@ resource "google_storage_bucket" "app_bucket" {
   }
   uniform_bucket_level_access = true
 }
-
-# Create a persistent disk
-resource "google_compute_disk" "app_disk" {
-  name = var.disk_name
-  type = "pd-standard"
-  zone = var.zone
-  size = var.disk_size
-}
-
-# Attach persistent disk to the VM
-resource "google_compute_attached_disk" "vm_disk_attachment" {
-  disk     = google_compute_disk.app_disk.id
-  instance = google_compute_instance.vm_instance.id
-}
